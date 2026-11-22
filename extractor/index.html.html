@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Z · Premium Extractor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0b1120;
+            color: #e8edf5;
+            min-height: 100vh;
+            padding: 24px;
+            transition: background 0.25s ease, color 0.25s ease;
+        }
+
+        body.light {
+            background: #f0f4fc;
+            color: #1a2332;
+        }
+
+        .app {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* ----- HEADER ----- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .logo {
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #4b7bec, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo span {
+            font-weight: 300;
+            -webkit-text-fill-color: #6c7a9a;
+        }
+
+        .theme-toggle {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e8edf5;
+            padding: 10px 22px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        body.light .theme-toggle {
+            background: #dce3f0;
+            border-color: #b0c0d8;
+            color: #1a2332;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(0.96);
+            opacity: 0.85;
+        }
+
+        /* ----- GRID ----- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 920px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: #131d2f;
+            border-radius: 20px;
+            padding: 22px 24px;
+            border: 1px solid #26344b;
+            transition: background 0.2s, border 0.2s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        body.light .panel {
+            background: #ffffff;
+            border-color: #d0dcec;
+            box-shadow: 0 8px 24px rgba(0, 20, 40, 0.06);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .panel-header h2 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #8aa3cc;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        body.light .panel-header h2 {
+            color: #4a5f7a;
+        }
+
+        /* ===== LIVE CONTROL COMPACT ===== */
+        .live-control-compact {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 26, 45, 0.6);
+            padding: 4px 12px 4px 14px;
+            border-radius: 40px;
+            border: 1px solid #2a4060;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+            margin-left: auto;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        body.light .live-control-compact {
+            background: rgba(238, 243, 251, 0.7);
+            border-color: #c8d4e8;
+        }
+
+        .live-control-compact:hover {
+            border-color: #4b7bec;
+        }
+
+        .live-control-compact .live-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #8aa3cc;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        body.light .live-control-compact .live-label {
+            color: #4a5f7a;
+        }
+
+        .live-control-compact .live-label svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        /* Toggle Switch - FIXED SPACING */
+        .toggle-switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background: #3b5075;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: background 0.25s ease;
+            flex-shrink: 0;
+            border: 1px solid #4b6085;
+            margin: 0 2px;
+        }
+
+        body.light .toggle-switch {
+            background: #b8c8e0;
+            border-color: #9aafc8;
+        }
+
+        .toggle-switch .thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        }
+
+        .toggle-switch.active {
+            background: #0f973d;
+            border-color: #0f973d;
+        }
+
+        body.light .toggle-switch.active {
+            background: #0f973d;
+            border-color: #0f973d;
+        }
+
+        .toggle-switch.active .thumb {
+            transform: translateX(16px);
+        }
+
+        .live-status {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 30px;
+            min-width: 28px;
+            text-align: center;
+            transition: 0.2s;
+            margin-left: 2px;
+        }
+
+        .live-status.on {
+            background: #0f973d20;
+            color: #3dde7a;
+            border: 1px solid #0f973d40;
+        }
+
+        .live-status.off {
+            background: #b91c1c20;
+            color: #f07a7a;
+            border: 1px solid #b91c1c40;
+        }
+
+        body.light .live-status.on {
+            background: #0f973d15;
+            color: #0b7a31;
+            border-color: #0f973d30;
+        }
+
+        body.light .live-status.off {
+            background: #b91c1c15;
+            color: #991515;
+            border-color: #b91c1c30;
+        }
+
+        textarea {
+            width: 100%;
+            height: 280px;
+            background: #0d1628;
+            border: 1px solid #293b55;
+            border-radius: 14px;
+            color: #d6e2f5;
+            padding: 16px;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            resize: vertical;
+            transition: 0.2s;
+            line-height: 1.6;
+        }
+
+        body.light textarea {
+            background: #f7faff;
+            border-color: #c8d4e8;
+            color: #1a2332;
+        }
+
+        textarea:focus {
+            border-color: #4b7bec;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(75, 123, 236, 0.12);
+        }
+
+        .output-box {
+            background: #0d1628;
+            border: 1px solid #293b55;
+            border-radius: 14px;
+            padding: 16px;
+            height: 280px;
+            overflow: auto;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 12.5px;
+            color: #b7d0f0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        body.light .output-box {
+            background: #f7faff;
+            border-color: #c8d4e8;
+            color: #1a2332;
+        }
+
+        .output-box::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .output-box::-webkit-scrollbar-track {
+            background: #1a2740;
+            border-radius: 10px;
+        }
+
+        .output-box::-webkit-scrollbar-thumb {
+            background: #3f5a7a;
+            border-radius: 10px;
+        }
+
+        body.light .output-box::-webkit-scrollbar-track {
+            background: #dce3f0;
+        }
+
+        body.light .output-box::-webkit-scrollbar-thumb {
+            background: #a0b5d0;
+        }
+
+        /* ----- TOOLBAR ----- */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 12px;
+            margin: 14px 0 10px;
+            padding: 4px 0;
+        }
+
+        .btn {
+            background: #1e314a;
+            border: 1px solid #31486a;
+            color: #e2edff;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        body.light .btn {
+            background: #e8edf6;
+            border-color: #c8d4e8;
+            color: #1a2332;
+        }
+
+        .btn:hover {
+            transform: scale(0.96);
+            opacity: 0.85;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #0f973d;
+            border-color: #0f973d;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #0b7a31;
+        }
+
+        .btn-danger {
+            background: #b91c1c;
+            border-color: #b91c1c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #991515;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border-color: #3b5075;
+        }
+
+        body.light .btn-ghost {
+            border-color: #b0c0d8;
+        }
+
+        .btn-warning {
+            background: #b45f1b;
+            border-color: #b45f1b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #964d14;
+        }
+
+        /* filter group */
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            background: #1a2a40;
+            border: 1px solid #2a4060;
+            color: #8aa3cc;
+            padding: 4px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: 0.15s;
+        }
+
+        body.light .filter-btn {
+            background: #e8edf6;
+            border-color: #c8d4e8;
+            color: #4a5f7a;
+        }
+
+        .filter-btn.active {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+        body.light .filter-btn.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* progress */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: #1e293b;
+            border-radius: 6px;
+            margin: 8px 0 12px;
+            overflow: hidden;
+        }
+
+        body.light .progress-container {
+            background: #dce3f0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4b7bec, #a29bfe);
+            width: 0%;
+            transition: width 0.1s;
+            border-radius: 6px;
+        }
+
+        /* stats */
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 28px;
+            background: #0e1a2b;
+            padding: 10px 22px;
+            border-radius: 60px;
+            border: 1px solid #263a55;
+            margin: 6px 0 10px;
+            font-size: 0.85rem;
+            transition: background 0.2s, border 0.2s;
+        }
+
+        body.light .stats {
+            background: #eef3fb;
+            border-color: #c8d4e8;
+        }
+
+        .stats span {
+            color: #8aa3cc;
+        }
+
+        body.light .stats span {
+            color: #4a5f7a;
+        }
+
+        .stats b {
+            color: #eaf1ff;
+            margin-left: 4px;
+            font-weight: 600;
+        }
+
+        body.light .stats b {
+            color: #1a2332;
+        }
+
+        .drop-zone {
+            border: 2px dashed #2e4568;
+            border-radius: 16px;
+            padding: 18px;
+            text-align: center;
+            color: #6580aa;
+            background: #0f1a2d;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        body.light .drop-zone {
+            background: #f7faff;
+            border-color: #c8d4e8;
+            color: #4a5f7a;
+        }
+
+        .drop-zone.dragover {
+            border-color: #4b7bec;
+            background: #16273f;
+            color: #b0caff;
+        }
+
+        body.light .drop-zone.dragover {
+            background: #e3edff;
+        }
+
+        .search-box {
+            background: #0d1628;
+            border: 1px solid #293b55;
+            border-radius: 40px;
+            padding: 6px 18px;
+            color: #d6e2f5;
+            font-size: 0.82rem;
+            width: 150px;
+            font-family: inherit;
+            margin-left: auto;
+        }
+
+        .search-box:focus {
+            border-color: #4b7bec;
+            outline: none;
+        }
+
+        body.light .search-box {
+            background: #f7faff;
+            border-color: #c8d4e8;
+            color: #1a2332;
+        }
+
+        /* ===== INPUT FOOTER ===== */
+        .input-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.75rem;
+            color: #5e7a9e;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        body.light .input-footer {
+            color: #6a7f9a;
+        }
+
+        .input-footer .hint {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-footer .hint svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+        }
+
+        .char-count {
+            background: #0d1628;
+            padding: 2px 12px;
+            border-radius: 30px;
+            border: 1px solid #293b55;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        body.light .char-count {
+            background: #f7faff;
+            border-color: #c8d4e8;
+        }
+
+        @media (max-width: 700px) {
+            .toolbar {
+                gap: 6px;
+            }
+
+            .btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+
+            .live-control-compact {
+                padding: 4px 10px 4px 12px;
+                gap: 6px;
+            }
+
+            .live-control-compact .live-label {
+                font-size: 0.65rem;
+            }
+
+            .toggle-switch {
+                width: 30px;
+                height: 18px;
+            }
+
+            .toggle-switch .thumb {
+                width: 12px;
+                height: 12px;
+            }
+
+            .toggle-switch.active .thumb {
+                transform: translateX(12px);
+            }
+
+            .stats {
+                gap: 8px 16px;
+                padding: 8px 16px;
+                font-size: 0.75rem;
+            }
+
+            .search-box {
+                width: 120px;
+            }
+
+            .input-footer {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">Z <span>| extract</span></div>
+            <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+        </div>
+
+        <!-- GRID -->
+        <div class="grid-2">
+            <!-- INPUT PANEL -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>📄 Input</h2>
+                    <!-- LIVE CONTROL -->
+                    <div class="live-control-compact" id="liveControl">
+                        <span class="live-label">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Live
+            </span>
+                        <div class="toggle-switch active" id="liveSwitch" role="button" tabindex="0"
+                            aria-label="Toggle live extraction">
+                            <div class="thumb"></div>
+                        </div>
+                        <span class="live-status on" id="liveStatus">ON</span>
+                    </div>
+                </div>
+                <textarea id="inputArea" placeholder="Paste URLs, domains, IPs, emails, logs..."></textarea>
+
+                <!-- INPUT FOOTER -->
+                <div class="input-footer">
+                    <span class="hint">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 16v-4M12 8h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Drop .txt file or click to upload
+        </span>
+                    <span class="char-count" id="charCount">0 characters</span>
+                </div>
+
+                <div class="drop-zone" id="dropZone">📂 Drop .txt file here or click to select</div>
+                <input type="file" id="fileInput" accept=".txt" style="display:none">
+            </div>
+
+            <!-- OUTPUT PANEL -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>📋 Extracted <span id="resultCount" style="font-weight:400;color:#5e7a9e;">0 items</span></h2>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="domains">Domains</button>
+                        <button class="filter-btn" data-filter="urls">URLs</button>
+                        <button class="filter-btn" data-filter="ips">IPs</button>
+                        <button class="filter-btn" data-filter="emails">Emails</button>
+                    </div>
+                </div>
+                <div class="output-box" id="outputDisplay"></div>
+            </div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="toolbar">
+            <button class="btn btn-primary" data-extract="all">⚡ Extract All</button>
+            <button class="btn btn-ghost" data-extract="domains">🏠 Domains</button>
+            <button class="btn btn-ghost" data-extract="urls">🌐 URLs</button>
+            <button class="btn btn-ghost" data-extract="ipv4">📶 IPv4</button>
+            <button class="btn btn-ghost" data-extract="ipv6">📶 IPv6</button>
+            <button class="btn btn-ghost" data-extract="emails">✉️ Emails</button>
+
+            <button class="btn btn-success" id="copyBtn">📋 Copy</button>
+            <button class="btn btn-warning" id="downloadTxt">⬇️ TXT</button>
+         
+            <button class="btn btn-danger" id="clearBtn">✖ Clear</button>
+            <input class="search-box" id="filterInput" placeholder="🔍 search...">
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+            <span>🌐 URLs <b id="statUrls">0</b></span>
+            <span>🏠 Domains <b id="statDomains">0</b></span>
+            <span>📶 IPv4 <b id="statIpv4">0</b></span>
+            <span>📶 IPv6 <b id="statIpv6">0</b></span>
+            <span>✉️ Emails <b id="statEmails">0</b></span>
+            <span>🧩 Total <b id="statTotal">0</b></span>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+  // REGEX
+  // ============================================================
+  const REGEX = {
+    URL: /https?:\/\/[^\s"'<>(){}|\\^`[\]]+/gi,
+    DOMAIN: /\b(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\b/g,
+    IPV4: /\b(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g,
+    IPV6: /\b(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}\b|\b(?:[A-Fa-f0-9]{1,4}:){1,7}:[A-Fa-f0-9]{1,4}\b|\b::(?:[A-Fa-f0-9]{1,4}:){0,6}[A-Fa-f0-9]{1,4}\b|\b(?:[A-Fa-f0-9]{1,4}:){1,7}::\b/g,
+    EMAIL: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g,
+  };
+
+  function extractURLs(text) { const r=[]; let m; while((m=REGEX.URL.exec(text))!==null){ let u=m[0].replace(/[.,;:!?)]+$/,''); r.push(u); } return r; }
+  function extractDomains(text) { const r=[]; let m; while((m=REGEX.DOMAIN.exec(text))!==null){ let d=m[0].toLowerCase(); if(d.endsWith('.')) d=d.slice(0,-1); if(d.match(/^\d+\.\d+\.\d+\.\d+$/)) continue; if(d.includes('@')) continue; if(d.split('.').length>=2) r.push(d); } return r; }
+  function extractIPv4(text) { const r=[]; let m; while((m=REGEX.IPV4.exec(text))!==null) r.push(m[0]); return r; }
+  function extractIPv6(text) { const r=[]; let m; while((m=REGEX.IPV6.exec(text))!==null) r.push(m[0]); return r; }
+  function extractEmails(text) { const r=[]; let m; while((m=REGEX.EMAIL.exec(text))!==null) r.push(m[0]); return r; }
+
+  function extractAll(text) {
+    if (!text || !text.trim()) return { urls:[], domains:[], ipv4:[], ipv6:[], emails:[] };
+    return {
+      urls: [...new Set(extractURLs(text))].sort(),
+      domains: [...new Set(extractDomains(text))].sort(),
+      ipv4: [...new Set(extractIPv4(text))].sort(),
+      ipv6: [...new Set(extractIPv6(text))].sort(),
+      emails: [...new Set(extractEmails(text))].sort(),
+    };
+  }
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  let currentResult = { urls:[], domains:[], ipv4:[], ipv6:[], emails:[] };
+  let currentFilter = 'all';
+  let searchQuery = '';
+  let liveMode = true;
+
+  const inputArea = document.getElementById('inputArea');
+  const outputDisplay = document.getElementById('outputDisplay');
+  const progressBar = document.getElementById('progressBar');
+  const statUrls = document.getElementById('statUrls');
+  const statDomains = document.getElementById('statDomains');
+  const statIpv4 = document.getElementById('statIpv4');
+  const statIpv6 = document.getElementById('statIpv6');
+  const statEmails = document.getElementById('statEmails');
+  const statTotal = document.getElementById('statTotal');
+  const resultCount = document.getElementById('resultCount');
+  const charCount = document.getElementById('charCount');
+
+  const liveSwitch = document.getElementById('liveSwitch');
+  const liveStatus = document.getElementById('liveStatus');
+
+  // ============================================================
+  // RENDER
+  // ============================================================
+  function renderOutput() {
+    let items = [];
+    if (currentFilter === 'all') {
+      items = [...currentResult.urls, ...currentResult.domains, ...currentResult.ipv4, ...currentResult.ipv6, ...currentResult.emails];
+    } else if (currentFilter === 'domains') items = currentResult.domains;
+    else if (currentFilter === 'urls') items = currentResult.urls;
+    else if (currentFilter === 'ips') items = [...currentResult.ipv4, ...currentResult.ipv6];
+    else if (currentFilter === 'emails') items = currentResult.emails;
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      items = items.filter(item => item.toLowerCase().includes(q));
+    }
+    items = [...new Set(items)].sort();
+
+    if (items.length === 0) outputDisplay.textContent = '🕳️ No results found';
+    else outputDisplay.textContent = items.join('\n');
+
+    statUrls.textContent = currentResult.urls.length;
+    statDomains.textContent = currentResult.domains.length;
+    statIpv4.textContent = currentResult.ipv4.length;
+    statIpv6.textContent = currentResult.ipv6.length;
+    statEmails.textContent = currentResult.emails.length;
+    const total = currentResult.urls.length + currentResult.domains.length + currentResult.ipv4.length + currentResult.ipv6.length + currentResult.emails.length;
+    statTotal.textContent = total;
+    resultCount.textContent = items.length + ' items';
+  }
+
+  function updateProgress(p) { progressBar.style.width = Math.min(p,100)+'%'; }
+
+  function updateCharCount() {
+    const count = inputArea.value.length;
+    charCount.textContent = count + ' characters';
+  }
+
+  // ============================================================
+  // EXTRACT
+  // ============================================================
+  function extractAndRender(type) {
+    const text = inputArea.value;
+    if (!text || !text.trim()) {
+      if (type === 'all' || type === 'auto') {
+        currentResult = { urls:[], domains:[], ipv4:[], ipv6:[], emails:[] };
+        renderOutput();
+        updateProgress(0);
+      }
+      return;
+    }
+    updateProgress(18);
+    setTimeout(() => {
+      let result;
+      if (type === 'all' || type === 'auto') {
+        result = extractAll(text);
+      } else if (type === 'domains') {
+        result = { urls:[], domains:extractDomains(text), ipv4:[], ipv6:[], emails:[] };
+      } else if (type === 'urls') {
+        result = { urls:extractURLs(text), domains:[], ipv4:[], ipv6:[], emails:[] };
+      } else if (type === 'ipv4') {
+        result = { urls:[], domains:[], ipv4:extractIPv4(text), ipv6:[], emails:[] };
+      } else if (type === 'ipv6') {
+        result = { urls:[], domains:[], ipv4:[], ipv6:extractIPv6(text), emails:[] };
+      } else if (type === 'emails') {
+        result = { urls:[], domains:[], ipv4:[], ipv6:[], emails:extractEmails(text) };
+      }
+      result.urls = [...new Set(result.urls)].sort();
+      result.domains = [...new Set(result.domains)].sort();
+      result.ipv4 = [...new Set(result.ipv4)].sort();
+      result.ipv6 = [...new Set(result.ipv6)].sort();
+      result.emails = [...new Set(result.emails)].sort();
+      currentResult = result;
+      updateProgress(75);
+      setTimeout(() => { renderOutput(); updateProgress(100); setTimeout(()=>updateProgress(0), 350); }, 40);
+    }, 40);
+  }
+
+  function handleLiveExtract() {
+    if (liveMode) extractAndRender('auto');
+  }
+
+  // ============================================================
+  // LIVE TOGGLE
+  // ============================================================
+  function setLiveMode(on) {
+    liveMode = on;
+    liveSwitch.classList.toggle('active', on);
+    liveStatus.textContent = on ? 'ON' : 'OFF';
+    liveStatus.className = `live-status ${on ? 'on' : 'off'}`;
+    if (on) handleLiveExtract();
+  }
+
+  liveSwitch.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setLiveMode(!liveMode);
+  });
+
+  // ============================================================
+  // DOWNLOAD FUNCTIONS
+  // ============================================================
+  function download(type) {
+    const text = outputDisplay.textContent;
+    if (!text || text.includes('No results') || text.includes('Please paste')) {
+      alert('No data to download.');
+      return;
+    }
+
+    let content = text;
+    let ext = type;
+    let mimeType = 'text/plain';
+
+    if (type === 'csv') {
+      const lines = text.split('\n').filter(line => line.trim());
+      content = lines.map(line => `"${line.replace(/"/g, '""')}"`).join('\n');
+      mimeType = 'text/csv';
+    } else if (type === 'json') {
+      const items = text.split('\n').filter(line => line.trim());
+      content = JSON.stringify(items, null, 2);
+      mimeType = 'application/json';
+      ext = 'json';
+    }
+
+    const blob = new Blob([content], { type: mimeType });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `extracted.${ext}`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  // ============================================================
+  // EVENTS
+  // ============================================================
+  document.querySelectorAll('[data-extract]').forEach(btn => {
+    btn.addEventListener('click', () => { extractAndRender(btn.dataset.extract); });
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderOutput();
+    });
+  });
+
+  document.getElementById('filterInput').addEventListener('input', (e) => { searchQuery = e.target.value; renderOutput(); });
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const text = outputDisplay.textContent;
+    if (!text || text.includes('No results') || text.includes('Please paste')) { 
+      alert('Nothing to copy.'); 
+      return; 
+    }
+    try { 
+      await navigator.clipboard.writeText(text); 
+      alert('✅ Copied!'); 
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; 
+      document.body.appendChild(ta); 
+      ta.select(); 
+      document.execCommand('copy'); 
+      ta.remove();
+      alert('✅ Copied!');
+    }
+  });
+
+  // Download buttons
+  document.getElementById('downloadTxt').addEventListener('click', () => download('txt'));
+
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    inputArea.value = '';
+    currentResult = { urls:[], domains:[], ipv4:[], ipv6:[], emails:[] };
+    currentFilter = 'all'; 
+    searchQuery = '';
+    document.getElementById('filterInput').value = '';
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector('[data-filter="all"]').classList.add('active');
+    renderOutput();
+    updateProgress(0);
+    updateCharCount();
+  });
+
+  // Theme
+  let darkMode = true;
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    darkMode = !darkMode;
+    document.body.classList.toggle('light', !darkMode);
+    document.getElementById('themeToggle').textContent = darkMode ? '🌙 Dark' : '☀️ Light';
+  });
+
+  // Live input (debounced)
+  let liveTimeout = null;
+  inputArea.addEventListener('input', () => {
+    updateCharCount();
+    if (!liveMode) return;
+    clearTimeout(liveTimeout);
+    liveTimeout = setTimeout(() => { handleLiveExtract(); }, 220);
+  });
+
+  // Drag & drop - only .txt
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  
+  dropZone.addEventListener('click', ()=>fileInput.click());
+  dropZone.addEventListener('dragover', (e)=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', ()=>{ dropZone.classList.remove('dragover'); });
+  dropZone.addEventListener('drop', (e)=>{
+    e.preventDefault(); 
+    dropZone.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length) {
+      const file = files[0];
+      if (file.name.endsWith('.txt')) {
+        handleFile(file);
+      } else {
+        alert('Please drop a .txt file only.');
+      }
+    }
+  });
+  
+  fileInput.addEventListener('change', ()=>{
+    if (fileInput.files.length) {
+      const file = fileInput.files[0];
+      if (file.name.endsWith('.txt')) {
+        handleFile(file);
+      } else {
+        alert('Please select a .txt file.');
+      }
+    }
+    fileInput.value = '';
+  });
+  
+  function handleFile(file) {
+    const reader = new FileReader();
+    reader.onload = (ev) => { 
+      inputArea.value = ev.target.result; 
+      updateCharCount();
+      handleLiveExtract(); 
+    };
+    reader.onerror = ()=>alert('Failed to read file.');
+    reader.readAsText(file);
+  }
+
+  // Ctrl+Enter
+  inputArea.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault(); 
+      extractAndRender('all');
+    }
+  });
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  updateCharCount();
+  setTimeout(() => { if (inputArea.value.trim()) handleLiveExtract(); }, 120);
+  renderOutput();
+    </script>
+</body>
+
+</html>
